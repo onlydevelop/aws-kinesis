@@ -1,20 +1,22 @@
+stream_name = activity_stream
+
 create:
-	aws kinesis create-stream --stream-name test-stream --shard-count 1
+	aws kinesis create-stream --stream-name $(stream_name) --shard-count 1
 
 delete:
-	aws kinesis delete-stream --stream-name test-stream
+	aws kinesis delete-stream --stream-name $(stream_name)
 
 list:
 	aws kinesis list-streams
 
 describe:
-	aws kinesis describe-stream --stream-name test-stream
+	aws kinesis describe-stream --stream-name $(stream_name)
 
 put:
-	aws kinesis put-record --stream-name test-stream --data file://payload.json --partition-key 1
+	aws kinesis put-record --stream-name $(stream_name) --data file://payload.json --partition-key 1
 
 get-id:
-	aws kinesis get-shard-iterator --stream-name test-stream --shard-id shardId-000000000000 --shard-iterator-type TRIM_HORIZON
+	aws kinesis get-shard-iterator --stream-name $(stream_name) --shard-id shardId-000000000000 --shard-iterator-type TRIM_HORIZON
 
 get:
 	# Put the shard-iterator value from the get-id response
