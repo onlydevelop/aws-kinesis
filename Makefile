@@ -13,7 +13,8 @@ describe:
 	aws kinesis describe-stream --stream-name $(stream_name)
 
 put:
-	aws kinesis put-record --stream-name $(stream_name) --data file://payload.json --partition-key 1
+	# aws kinesis put-record --stream-name $(stream_name) --data file://payload.json --partition-key 1
+	./ask.sh $(stream_name)
 
 get-id:
 	aws kinesis get-shard-iterator --stream-name $(stream_name) --shard-id shardId-000000000000 --shard-iterator-type TRIM_HORIZON
