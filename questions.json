@@ -1,0 +1,22 @@
+{
+  "subject": "Maths",
+  "topic": "AddSubtract",
+  "questions": [
+    {
+      "question": "What is 24 + 3?",
+      "type": "choice",
+      "answer": {
+          "options": ["25", "26", "27", "28"],
+          "correct": "27"
+      }
+    },
+    {
+      "question": "What is 15 + 2?",
+      "type": "choice",
+      "answer": {
+          "options": ["16", "17", "18"],
+          "correct": "17"
+      }
+    }
+  ]
+}
