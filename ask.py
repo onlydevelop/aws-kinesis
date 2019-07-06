@@ -4,6 +4,16 @@ import json
 import sys
 import time
 import base64
+import re
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+# Create .env file path.
+dotenv_path = join(dirname(__file__), '.env')
+
+# Load file from the path.
+load_dotenv(dotenv_path)
 
 def repeat(c, n):
     r = ""
@@ -65,6 +75,10 @@ def ask_questions(questions):
         res = check_answer(question)
         print(res)
 
+def post_activity(data):
+    url = os.getenv('url')
+    print(url)
+
 def prepare_response(start_time, request, response, delta):
     data = {
         "start_time": start_time,
@@ -72,6 +86,7 @@ def prepare_response(start_time, request, response, delta):
         "response": response,
         "delta": delta
     }
+    post_activity(data)
     return data
 
 
