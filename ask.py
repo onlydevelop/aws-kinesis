@@ -82,11 +82,12 @@ def post_activity(response):
     data = json.dumps(response)
     requests.post(url = url, data = data)
 
-def prepare_response(start_time, request, response, delta):
+def prepare_response(start_time, request, response, correct, delta):
     data = {
         "start_time": start_time,
         "request": request,
         "response": response,
+        "correct": correct,
         "delta": delta
     }
     post_activity(data)
@@ -97,11 +98,13 @@ def check_answer(question):
     start_time = int(time.time())
     res = input("Answer: ")
     if res == question["answer"]["correct"]:
+        correct = 'yes'
         print("You are correct!")
     else:
+        correct = 'no'
         print("That's not correct!")
     end_time = int(time.time())
-    return prepare_response(start_time, encode(question["question"]), encode(res), (end_time - start_time))
+    return prepare_response(start_time, encode(question["question"]), encode(res), correct, (end_time - start_time))
 
 data = get_data()
 print_banner(data)
