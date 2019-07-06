@@ -2,12 +2,19 @@
 
 import json
 import sys
+import time
+import base64
 
 def repeat(c, n):
     r = ""
     for i in range(n):
         r = r + c
     return r
+
+def encode(data):
+    encodedBytes = base64.b64encode(data.encode("utf-8"))
+    encodedStr = str(encodedBytes, "utf-8")
+    return encodedStr
 
 def banner(text):
     print(text)
@@ -55,14 +62,28 @@ def ask_questions(questions):
         banner(question["question"])
         for i, option in enumerate(question["answer"]["options"], start=1):
             print(f"{i}: {option}")
-        check_answer(question)
+        res = check_answer(question)
+        print(res)
+
+def prepare_response(start_time, request, response, delta):
+    data = {
+        "start_time": start_time,
+        "request": request,
+        "response": response,
+        "delta": delta
+    }
+    return data
+
 
 def check_answer(question):
+    start_time = int(time.time())
     res = input("Answer: ")
     if res == question["answer"]["correct"]:
         print("You are correct!")
     else:
         print("That's not correct!")
+    end_time = int(time.time())
+    return prepare_response(start_time, encode(question["question"]), encode(res), (end_time - start_time))
 
 data = get_data()
 print_banner(data)
