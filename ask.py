@@ -6,6 +6,8 @@ import time
 import base64
 import re
 import os
+import requests
+
 from os.path import join, dirname
 from dotenv import load_dotenv
 
@@ -75,9 +77,10 @@ def ask_questions(questions):
         res = check_answer(question)
         print(res)
 
-def post_activity(data):
+def post_activity(response):
     url = os.getenv('url')
-    print(url)
+    data = json.dumps(response)
+    requests.post(url = url, data = data)
 
 def prepare_response(start_time, request, response, delta):
     data = {
