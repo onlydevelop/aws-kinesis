@@ -28,6 +28,11 @@ def encode(data):
     encodedStr = str(encodedBytes, "utf-8")
     return encodedStr
 
+def get_questions():
+    url = os.getenv('s3url')
+    r = requests.get(url, allow_redirects=True)
+    open('questions.json', 'wb').write(r.content)
+
 def banner(text):
     print(text)
     print(repeat("-", len(text)))
@@ -55,6 +60,7 @@ def banner(text):
 #     }
 #   ]
 def get_data():
+    get_questions()
     with open('questions.json') as json_file:
         try:
             data = json.load(json_file)
