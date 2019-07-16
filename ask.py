@@ -38,27 +38,45 @@ def banner(text):
     print(repeat("-", len(text)))
 
 # Structure of the data
-# {
-#   "subject": "Maths",
-#   "topic": "AddSubtract",
-#   "questions": [
-#     {
-#       "question": "What is 24 + 3?",
-#       "type": "choice",
-#       "answer": {
-#           "options": ["25", "26", "27", "28"],
-#           "correct": "27"
+# [
+#   {
+#     "subject": "Science",
+#     "topics": [
+#       {
+#         "topic": "Houses",
+#         "questions": [
+#           {
+#             "question": "House on wheels is called ____",
+#             "type": "choice",
+#             "answer": {
+#               "options": ["caravan", "houseboat", "stilt house", "building"],
+#               "correct": "caravan"
+#             }
+#           }
+#         ]
 #       }
-#     },
-#     {
-#       "question": "What is 15 + 2?",
-#       "type": "choice",
-#       "answer": {
-#           "options": ["16", "17", "18"],
-#           "correct": "17"
+#     ]
+#   },
+#   {
+#     "subject": "Maths",
+#     "topics": [
+#       {
+#         "topic": "AddSubtract",
+#         "questions": [
+#           {
+#             "question": "23 + 4 = ____",
+#             "type": "choice",
+#             "answer": {
+#               "options": ["25", "26", "27", "28"],
+#               "correct": "27"
+#             }
+#           }
+#         ]
 #       }
-#     }
-#   ]
+#     ]
+#   }
+# ]
+
 def get_data():
     get_questions()
     with open('questions.json') as json_file:
@@ -70,26 +88,27 @@ def get_data():
         finally:
             return data
 
-def print_banner(data):
-    banner(data["subject"])
-    banner(data["topic"])
-
-def ask_questions(questions):
-    for question in questions:
-        print("")
-        banner(question["question"])
-        for i, option in enumerate(question["answer"]["options"], start=1):
-            print(f"{i}: {option}")
-        res = check_answer(question)
-        print(res)
+def ask_questions(data):
+    for item in data:
+        banner(item["subject"])
+        for topic in item["topics"]:
+            banner(topic["topic"])
+            for question in topic["questions"]:
+                print("")
+                banner(question["question"])
+                for i, option in enumerate(question["answer"]["options"], start=1):
+                    print(f"{i}: {option}")
+                res = check_answer(item["subject"], topic["topic"], question)
+                print(res)
 
 def post_activity(response):
     url = os.getenv('url')
     data = json.dumps(response)
     requests.post(url = url, data = data)
 
-def prepare_response(start_time, request, response, correct, delta):
+def prepare_response(subject, topic, start_time, request, response, correct, delta):
     data = {
+        "sub_topic": f"{subject}-{topic}",
         "start_time": start_time,
         "request": request,
         "response": response,
@@ -99,8 +118,7 @@ def prepare_response(start_time, request, response, correct, delta):
     post_activity(data)
     return data
 
-
-def check_answer(question):
+def check_answer(subject, topic, question):
     start_time = int(time.time())
     res = input("Answer: ")
     if res == question["answer"]["correct"]:
@@ -110,8 +128,7 @@ def check_answer(question):
         correct = 'no'
         print("That's not correct!")
     end_time = int(time.time())
-    return prepare_response(start_time, encode(question["question"]), encode(res), correct, (end_time - start_time))
+    return prepare_response(subject, topic, start_time, encode(question["question"]), encode(res), correct, (end_time - start_time))
 
 data = get_data()
-print_banner(data)
-ask_questions(data["questions"])
+ask_questions(data)
