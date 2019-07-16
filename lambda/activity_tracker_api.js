@@ -3,8 +3,7 @@ AWS.config.update({region: 'ap-south-1'});
 const docClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10', region: 'ap-south-1'});
 
 exports.handler = (event, context, callback) => {
-  console.log(event.body);
-  
+
   var params = {
     TableName: 'activity',
     Item: JSON.parse(event.body)
@@ -17,7 +16,7 @@ exports.handler = (event, context, callback) => {
       console.log(err);
       status = "Error";
     } else {
-      console.log(data);
+
       status = "Success";
     }
   });
@@ -27,7 +26,5 @@ exports.handler = (event, context, callback) => {
         "body": status
     };
   callback(null, response);
-  
+
 };
-
-
