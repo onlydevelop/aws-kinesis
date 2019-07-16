@@ -98,7 +98,7 @@ def ask_questions(data):
                 banner(question["question"])
                 for i, option in enumerate(question["answer"]["options"], start=1):
                     print(f"{i}: {option}")
-                res = check_answer(question)
+                res = check_answer(item["subject"], topic["topic"], question)
                 print(res)
 
 def post_activity(response):
@@ -106,8 +106,9 @@ def post_activity(response):
     data = json.dumps(response)
     requests.post(url = url, data = data)
 
-def prepare_response(start_time, request, response, correct, delta):
+def prepare_response(subject, topic, start_time, request, response, correct, delta):
     data = {
+        "sub_topic": f"{subject}-{topic}",
         "start_time": start_time,
         "request": request,
         "response": response,
@@ -117,7 +118,7 @@ def prepare_response(start_time, request, response, correct, delta):
     post_activity(data)
     return data
 
-def check_answer(question):
+def check_answer(subject, topic, question):
     start_time = int(time.time())
     res = input("Answer: ")
     if res == question["answer"]["correct"]:
@@ -127,7 +128,7 @@ def check_answer(question):
         correct = 'no'
         print("That's not correct!")
     end_time = int(time.time())
-    return prepare_response(start_time, encode(question["question"]), encode(res), correct, (end_time - start_time))
+    return prepare_response(subject, topic, start_time, encode(question["question"]), encode(res), correct, (end_time - start_time))
 
 data = get_data()
 ask_questions(data)
