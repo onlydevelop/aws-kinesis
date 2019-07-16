@@ -30,8 +30,12 @@ def encode(data):
 
 def get_questions():
     url = os.getenv('s3url')
-    r = requests.get(url, allow_redirects=True)
-    open('questions.json', 'wb').write(r.content)
+    try:
+        r = requests.get(url, allow_redirects=True)
+        open('questions.json', 'wb').write(r.content)
+    except:
+        print("Internet connection is down. Please check the Wifi modem!")
+        sys.exit(1)
 
 def banner(text):
     print(text)
@@ -104,7 +108,11 @@ def ask_questions(data):
 def post_activity(response):
     url = os.getenv('url')
     data = json.dumps(response)
-    requests.post(url = url, data = data)
+    try:
+        requests.post(url = url, data = data)
+    except:
+        print("Internet connection is down. Please check the Wifi modem!")
+        sys.exit(1)
 
 def prepare_response(subject, topic, start_time, request, response, correct, delta):
     data = {
