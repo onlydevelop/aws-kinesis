@@ -38,27 +38,45 @@ def banner(text):
     print(repeat("-", len(text)))
 
 # Structure of the data
-# {
-#   "subject": "Maths",
-#   "topic": "AddSubtract",
-#   "questions": [
-#     {
-#       "question": "What is 24 + 3?",
-#       "type": "choice",
-#       "answer": {
-#           "options": ["25", "26", "27", "28"],
-#           "correct": "27"
+# [
+#   {
+#     "subject": "Science",
+#     "topics": [
+#       {
+#         "topic": "Houses",
+#         "questions": [
+#           {
+#             "question": "House on wheels is called ____",
+#             "type": "choice",
+#             "answer": {
+#               "options": ["caravan", "houseboat", "stilt house", "building"],
+#               "correct": "caravan"
+#             }
+#           }
+#         ]
 #       }
-#     },
-#     {
-#       "question": "What is 15 + 2?",
-#       "type": "choice",
-#       "answer": {
-#           "options": ["16", "17", "18"],
-#           "correct": "17"
+#     ]
+#   },
+#   {
+#     "subject": "Maths",
+#     "topics": [
+#       {
+#         "topic": "AddSubtract",
+#         "questions": [
+#           {
+#             "question": "23 + 4 = ____",
+#             "type": "choice",
+#             "answer": {
+#               "options": ["25", "26", "27", "28"],
+#               "correct": "27"
+#             }
+#           }
+#         ]
 #       }
-#     }
-#   ]
+#     ]
+#   }
+# ]
+
 def get_data():
     get_questions()
     with open('questions.json') as json_file:
