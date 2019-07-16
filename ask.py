@@ -88,18 +88,18 @@ def get_data():
         finally:
             return data
 
-def print_banner(data):
-    banner(data["subject"])
-    banner(data["topic"])
-
-def ask_questions(questions):
-    for question in questions:
-        print("")
-        banner(question["question"])
-        for i, option in enumerate(question["answer"]["options"], start=1):
-            print(f"{i}: {option}")
-        res = check_answer(question)
-        print(res)
+def ask_questions(data):
+    for item in data:
+        banner(item["subject"])
+        for topic in item["topics"]:
+            banner(topic["topic"])
+            for question in topic["questions"]:
+                print("")
+                banner(question["question"])
+                for i, option in enumerate(question["answer"]["options"], start=1):
+                    print(f"{i}: {option}")
+                res = check_answer(question)
+                print(res)
 
 def post_activity(response):
     url = os.getenv('url')
@@ -117,7 +117,6 @@ def prepare_response(start_time, request, response, correct, delta):
     post_activity(data)
     return data
 
-
 def check_answer(question):
     start_time = int(time.time())
     res = input("Answer: ")
@@ -131,5 +130,4 @@ def check_answer(question):
     return prepare_response(start_time, encode(question["question"]), encode(res), correct, (end_time - start_time))
 
 data = get_data()
-print_banner(data)
-ask_questions(data["questions"])
+ask_questions(data)
