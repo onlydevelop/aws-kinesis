@@ -33,12 +33,17 @@ exports.handler = (event, context, callback) => {
             }
             callback(err, null);
         }else{
+            var correct = data.Count;
+            var incorrect = data.ScannedCount - data.Count;
+
             var response = {
                 'statusCode': 200,
-                'headers': { 'Content-Type': 'application/json' },
-                'body': JSON.stringify(data)
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': JSON.stringify([correct, incorrect])
             }
-            console.log(JSON.stringify(data))
             callback(null,response);
         }
     });
