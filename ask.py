@@ -7,6 +7,7 @@ import base64
 import re
 import os
 import requests
+import random
 
 from os.path import join, dirname
 from dotenv import load_dotenv
@@ -93,14 +94,19 @@ def get_data():
             return data
 
 def ask_questions(data):
+    random.shuffle(data)
     for item in data:
         banner(item["subject"])
         for topic in item["topics"]:
             banner(topic["topic"])
-            for question in topic["questions"]:
+            questions = topic["questions"]
+            random.shuffle(questions)
+            for question in questions:
                 print("")
                 banner(question["question"])
-                for i, option in enumerate(question["answer"]["options"], start=1):
+                options = question["answer"]["options"]
+                random.shuffle(options)
+                for i, option in enumerate(options, start=1):
                     print(f"{i}: {option}")
                 res = check_answer(item["subject"], topic["topic"], question)
                 print(res)
