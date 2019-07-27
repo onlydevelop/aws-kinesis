@@ -96,12 +96,18 @@ def get_data():
 def ask_questions(data):
     random.shuffle(data)
     for item in data:
+        if "disabled" in item:
+            continue
         banner(item["subject"])
         for topic in item["topics"]:
+            if "disabled" in topic:
+                continue
             banner(topic["topic"])
             questions = topic["questions"]
             random.shuffle(questions)
             for question in questions:
+                if "disabled" in question:
+                    continue
                 print("")
                 banner(question["question"])
                 options = question["answer"]["options"]
