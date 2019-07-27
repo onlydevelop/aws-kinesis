@@ -46,6 +46,7 @@ def banner(text):
 # [
 #   {
 #     "subject": "Science",
+#     "disabled": "yes",
 #     "topics": [
 #       {
 #         "topic": "Houses",
